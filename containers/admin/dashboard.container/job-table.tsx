@@ -11,6 +11,7 @@ import { ValueJobType } from '@/types/common'
 import { defaultValueJob } from '@/constants'
 import AdminDashboardJobApplicationsTable from './job-applications-table'
 import { toast } from 'sonner'
+import { mutate as mutateReports } from 'swr'
 
 export default function AdminDashboardJobTable() {
   const {
@@ -31,6 +32,7 @@ export default function AdminDashboardJobTable() {
       const response = await fetch(`/api/jobs/${id}`, { method: 'DELETE' })
       if (response.ok) {
         mutate()
+        mutateReports('/api/admin/reports')
         toast.success('Delete successful')
       }
     } catch (error) {
@@ -75,6 +77,7 @@ export default function AdminDashboardJobTable() {
         values={valueJob.data}
         onFinish={() => {
           mutate()
+          mutateReports('/api/admin/reports')
         }}
       />
       <AdminDashboardJobApplicationsTable
